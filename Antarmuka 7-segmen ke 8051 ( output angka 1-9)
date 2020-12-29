@@ -1,0 +1,32 @@
+ORG 000H // alamat awal awal
+START: MOV A,#00001001B // nilai awal akumulator
+MOV B,A
+MOV R0,#0AH // Register R0 diinisialisasi sebagai penghitung yang dihitung dari 10 sampai 0
+LABEL: MOV A,B
+INC A
+MOV B,A
+MOVC A,@A+PC // menambahkan byte dalam A ke alamat penghitung program
+MOV P1,A
+ACALL DELAY // memanggil penundaan timer
+DEC R0// Penghitung R0 berkurang 1
+MOV A,R0 // R0 dipindahkan ke akumulator untuk memeriksa apakah nilainya nol di instruksi berikutnya.
+JZ START // Periksa akumulator untuk nol dan melompat ke MULAI. Selesai untuk memeriksa apakah penghitungan telah selesai.
+SJMP LABEL
+DB 3FH // digit pola drive untuk 0
+DB 06H // digit pola drive untuk 1
+DB 5BH // digit pola drive untuk 2
+DB 4FH // digit pola drive untuk 3
+DB 66H // digit pola drive untuk 4
+DB 6DH // digit pola drive untuk 5
+DB 7DH // digit pola drive untuk 6
+DB 07H // digit pola drive untuk 7
+DB 7FH // digit pola drive untuk 8
+DB 6FH // digit pola drive untuk 9
+DELAY: MOV R4,#05H // subrutin untuk penundaan
+WAIT1: MOV R3,#00H
+WAIT2: MOV R2,#00H
+WAIT3: DJNZ R2,WAIT3
+DJNZ R3,WAIT2
+DJNZ R4,WAIT1
+RET
+END
